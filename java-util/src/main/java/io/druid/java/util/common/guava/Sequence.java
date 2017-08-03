@@ -77,6 +77,11 @@ public interface Sequence<T>
     return new MergeSequence<>(ordering, this.map(mapper));
   }
 
+  default <R> Sequence<R> flatMap(Function<? super T, ? extends Sequence<? extends R>> mapper)
+  {
+    return new ConcatSequence<>(this.map(mapper));
+  }
+
   default Sequence<T> withEffect(Runnable effect, Executor effectExecutor)
   {
     return Sequences.withEffect(this, effect, effectExecutor);
